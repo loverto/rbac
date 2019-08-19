@@ -1,0 +1,654 @@
+/**
+ * The Accesstoken entity.
+ * Oauth 所需表
+ * @author ylf
+ */
+entity Accesstoken {
+	/** id */
+	id String required maxlength(14),
+	/** 令牌 */
+	accessToken String required maxlength(128),
+	/** 令牌类别 */
+	tokenType String maxlength(1),
+	/** 有效时间 */
+	expires String maxlength(10),
+	/** 刷新令牌 */
+	refreshToken String maxlength(128),
+	/** 用户名 */
+	username String maxlength(32),
+	/** client_id */
+	clientId String maxlength(14),
+	/** 创建时间 */
+	createtime String maxlength(14),
+	/** 更新时间 */
+	modifytime String maxlength(14),
+	/** 是否可用 */
+	useful String maxlength(1),
+	/** 授权作用域 */
+	scope String maxlength(255)
+}
+
+/**
+ * The CdgRegioncode entity.
+ * 行政区划表
+ * @author ylf
+ */
+entity CdgRegioncode {
+	/** 行政区划id */
+	cdId String maxlength(255),
+	/** 行政区划名称 */
+	cdName String maxlength(255)
+}
+
+/**
+ * The Client entity.
+ * Oauth 客户端注册表
+ * @author ylf
+ */
+entity Client {
+	/** id */
+	id String required maxlength(14),
+	/** client_id */
+	clientId String required maxlength(14),
+	/** client_secret */
+	clientSecret String required maxlength(32),
+	/** 应用名称 */
+	proname String maxlength(64),
+	/** 应用地址 */
+	uri String maxlength(128),
+	/** 联系人 */
+	contacts String maxlength(32),
+	/** 联系电话 */
+	phone String maxlength(11),
+	/** 应用说明 */
+	prodesc String maxlength(255),
+	/** 创建时间 */
+	createtime String maxlength(14),
+	/** 应用类型 */
+	clientType String required maxlength(1),
+	/** 备注 */
+	comments String maxlength(255),
+	/** 作用域 */
+	scopes String maxlength(255),
+	/** 自身作用域 */
+	selfscope String maxlength(32)
+}
+
+/**
+ * The Code entity.
+ * Oauth Code 存储表
+ * @author ylf
+ */
+entity Code {
+	/** id */
+	id String required maxlength(14),
+	/** code */
+	code String required maxlength(16),
+	/** client_id */
+	clientId String required maxlength(14),
+	/** 跳转地址 */
+	redirectUri String maxlength(255),
+	/** 用户名 */
+	username String maxlength(32),
+	/** 是否可用 */
+	useful String maxlength(1),
+	/** 创建时间 */
+	createtime String maxlength(14),
+	/** 授权作用域 */
+	scope String maxlength(255)
+}
+
+/**
+ * The Dept entity.
+ * 部门/单位信息表
+ * @author ylf
+ */
+entity Dept {
+	/** 单位编号 */
+	dId String required maxlength(32),
+	/** 单位名称 */
+	dName String maxlength(255),
+	/** 单位描述 */
+	dDesc String maxlength(255),
+	/** 单位地址 */
+	dAddress String maxlength(255),
+	/** 联系电话 */
+	dPhone String maxlength(20),
+	/** 定义时间 */
+	dDeftime String maxlength(14),
+	/** 单位法人码 */
+	dLrid String maxlength(32),
+	/** 单位负责人姓名 */
+	dRpname String maxlength(255),
+	/** 电子邮件 */
+	dEmail String maxlength(64),
+	/** 联系人姓名 */
+	dCpname String maxlength(255),
+	/** 排序 */
+	dOrder Integer,
+	/** 行政区划 */
+	dRegioncode String maxlength(12),
+	/** 是否可用 */
+	dUseful String maxlength(1)
+}
+
+
+/**
+ * The Deptlevel entity.
+ * 部门/单位 级别信息表
+ * @author ylf
+ */
+entity Deptlevel {
+	/** 等级编号 */
+	dlId String required maxlength(32),
+	/** 等级名称 */
+	dlName String maxlength(255),
+	/** 等级描述 */
+	dlDesc String maxlength(255),
+	/** 等级排序 */
+	dlRank Integer
+}
+
+/**
+ * Many to one relationship.
+ * 部门/单位和部门/单位级别的多对一关系
+ */
+relationship ManyToOne {
+	Dept {dLevelId} to Deptlevel
+}
+
+
+/**
+ * The Deptrelation entity.
+ * 部门/单位 关系信息表
+ * 看将来是否有用，现在存疑
+ * @author ylf
+ */
+entity Deptrelation {
+	/** 单位关系编号 */
+	drlId String required maxlength(32),
+	/** 单位关系名称 */
+	drlName String maxlength(64)
+}
+
+
+/**
+ * Many to Many relationship.
+ * 部门/单位 跟角色的多对多关系
+ */
+relationship ManyToMany {
+	Dept {drDid} to Role {drRid}
+}
+
+/**
+ * Many to Many relationship.
+ * 上下级对应关系
+ */
+relationship ManyToMany {
+	Dept {drlId} to Dept {ddSuperdid}
+}
+
+/**
+ * The Object entity.
+ * 资源对象 信息表
+ * @author ylf
+ */
+entity Object {
+	/** 资源编号 */
+	obId String required maxlength(32),
+	/** 资源名称 */
+	obName String maxlength(255),
+	/** 定义时间 */
+	obDeftime String maxlength(14),
+	/** 资源描述 */
+	obDesc String maxlength(255),
+	/** 资源业务类型编号 */
+	obBtid String maxlength(32),
+	/** 资源属性 */
+	obAttri String maxlength(2),
+	/** 资源所属等级编号 */
+	obLid String maxlength(2),
+	/** 上级资源编号 */
+	obObid String maxlength(32),
+	/** 排序 */
+	obOrder Integer,
+	/** 是否可用 */
+	obUseful String maxlength(1)
+}
+
+
+/**
+ * The Objectbtype entity.
+ * 资源类型 信息表
+ * @author ylf
+ */
+entity Objectbtype {
+	/** 资源类型编号 */
+	obtId String required maxlength(32),
+	/** 资源类型名称 */
+	obtName String maxlength(255),
+	/** 定义时间 */
+	obtDeftime String maxlength(14),
+	/** 排序 */
+	obtOrder Integer,
+	/** 是否可用 */
+	obtUseful String maxlength(1)
+}
+
+/**
+ * One to many relationship.
+ * 资源类型和资源对应关系
+ */
+relationship OneToMany {
+	Objectbtype{objtId} to Object
+}
+
+
+
+/**
+ * The Operation entity.
+ * 操作 信息表
+ * @author ylf
+ */
+entity Operation {
+	/** 操作编号 */
+	opId String required maxlength(32),
+	/** 操作名称 */
+	opName String maxlength(255),
+	/** 操作描述 */
+	opDesc String maxlength(255),
+	/** 操作类型 */
+	opType String maxlength(2),
+	/** 是否可用 */
+	opUseful String maxlength(1)
+}
+
+/**
+ * Many to one relationship.
+ * 操作和资源类别的多对多关系
+ */
+relationship ManyToMany {
+	Operation {opobOpid} to Objectbtype {opobObtid}
+}
+
+
+/**
+ * The POpOb entity.
+ * 权限资源操作 信息表
+ * @author ylf
+ */
+entity POpOb {
+	/** 权限编号 */
+	pooPid String required maxlength(32),
+	/** 权限名称 */
+	pooPname String maxlength(255),
+	/** 是否可用 */
+	pooUseful String maxlength(1)
+}
+
+/**
+ * Many to one relationship.
+ * 权限和操作的对应关系
+ */
+relationship ManyToOne {
+	POpOb {pooOpid} to Operation
+}
+
+/**
+ * Many to one relationship.
+ * 权限和资源的对应关系
+ */
+relationship ManyToOne {
+	POpOb {pooObid} to Object
+}
+
+/**
+ * The RbacCzrz entity.
+ * RBAC操作日志 信息表
+ * @author ylf
+ */
+entity RbacCzrz {
+	/** 操作类型 */
+	czlx String maxlength(255),
+	/** 操作方法 */
+	czff String maxlength(255),
+	/** 操作关键字名称 */
+	czgjzmc String maxlength(255),
+	/** 操作关键字 */
+	czgjz String maxlength(255),
+	/** 操作内容 */
+	cznr String maxlength(255),
+	/** 操作员部门id */
+	czybmid String maxlength(32),
+	/** 操作员id */
+	czyid String maxlength(32),
+	/** 操作时间 */
+	czsj String maxlength(17),
+	/** 操作计算机ip */
+	czjsjip String maxlength(255),
+	/** 会话序号 */
+	hhxh String maxlength(32),
+	/** 应用sessionid */
+	appsid String maxlength(255),
+	/** 登录票据 */
+	dlpj String maxlength(255),
+	/** 用户名 */
+	czyxm String maxlength(100),
+	/** 用户所属区县 */
+	xzqhdm String maxlength(12),
+	/** 业务序号 */
+	ywxh String maxlength(255),
+	/** 操作模块（资源id） */
+	zyid String maxlength(255),
+	/** 操作结束时间 */
+	czjssj String maxlength(17),
+	/** 运行时间 */
+	yxsj Double
+}
+
+/**
+ * The Role entity.
+ * 角色 信息表
+ * @author ylf
+ */
+entity Role {
+	/** 角色编号 */
+	rId String required maxlength(32),
+	/** 角色名称 */
+	rName String maxlength(255),
+	/** 描述 */
+	rDesc String maxlength(255),
+	/** 是否缺省 */
+	rDefaultflag String maxlength(1),
+	/** 角色数量 */
+	rNumber String maxlength(6),
+	/** 排序 */
+	rOrder Integer,
+	/** 是否可用 */
+	rUseful String maxlength(1)
+}
+
+/**
+ * The Roletype entity.
+ * 角色类型 信息表
+ * @author ylf
+ */
+entity Roletype {
+	/** 角色类别编号 */
+	rtId String required maxlength(32),
+	/** 上级角色类别编号 */
+	rtSuperid String maxlength(32),
+	/** 角色类别名称 */
+	rtName String maxlength(255),
+	/** 角色类别公私有标识 */
+	rtFlag String maxlength(1),
+	/** 角色类别描述 */
+	rtDesc String maxlength(255),
+	/** 是否可用 */
+	rtUseful String maxlength(1)
+}
+
+/**
+ * Many to one relationship.
+ * 角色类别和角色的对应关系
+ */
+relationship ManyToOne {
+	Roletype{rRtid} to Role
+}
+
+/**
+ * Many to Many relationship.
+ * 角色权限关联信息
+ */
+relationship ManyToMany {
+	POpOb {rpPid} to Role {rpRid}
+}
+
+
+/**
+ * The SaSessionMonitor entity.
+ * 超级管理员会话监控 信息表
+ * @author ylf
+ */
+entity SaSessionMonitor {
+	/** 会话编号 */
+	samId String required maxlength(32),
+	/** 安全管理员编号 */
+	samSaid String maxlength(32),
+	/** 权限编号 */
+	samPid String maxlength(32),
+	/** 操作时间 */
+	samDeftime String maxlength(14)
+}
+
+
+/**
+ * The Samonitor entity.
+ * 超级管理员监控 信息表
+ * @author ylf
+ */
+entity Samonitor {
+	/** 管理员编号 */
+	sasSaid String required maxlength(32),
+	/** 会话编号 */
+	sasSid String required maxlength(32),
+	/** 断开时间 */
+	sasCuttime String required maxlength(14),
+	/** 断开原因 */
+	sasCutcause String maxlength(255)
+}
+
+/**
+ * The Sapermission entity.
+ * 超级管理员权限 信息表
+ * @author ylf
+ */
+entity Sapermission {
+	/** 安全管理员单位编号 */
+	sapDid String required maxlength(32),
+	/** 权限编号 */
+	sapPid String required maxlength(32)
+}
+
+
+/**
+ * The Sapobjectbtype entity.
+ * 超级管理员资源类型 信息表
+ * @author ylf
+ */
+entity Sapobjectbtype {
+	/** 安全管理员单位编号 */
+	sapDid String required maxlength(32),
+	/** 资源类别编号 */
+	sapObtid String required maxlength(32)
+}
+
+
+/**
+ * The Saproletype entity.
+ * 超级管理员角色类型 信息表
+ * @author ylf
+ */
+entity Saproletype {
+	/** 安全管理员单位编号 */
+	sapDid String required maxlength(32),
+	/** 角色类别编号 */
+	sapRtid String required maxlength(32)
+}
+
+
+/**
+ * The Scope entity.
+ * Oauth 作用域 信息表
+ * @author ylf
+ */
+entity Scope {
+	/** id */
+	id String required maxlength(14),
+	/** 作用域 */
+	scope String maxlength(16),
+	/** 作用域说明 */
+	scodesc String maxlength(255)
+}
+
+
+/**
+ * The Securityadmin entity.
+ * 超级管理员安全 信息表
+ * @author ylf
+ */
+entity Securityadmin {
+	/** 安全管理员单位编号 */
+	saDid String required maxlength(32),
+	/** 登录口令 */
+	saPassword String maxlength(255),
+	/** 用户编号 */
+	saUid String required maxlength(32),
+	/** 是否超级管理员 */
+	saSuperflag String maxlength(1)
+}
+
+
+/**
+ * The Securitylog entity.
+ * 安全日志 信息表
+ * @author ylf
+ */
+entity Securitylog {
+	/** 会话id */
+	slId String required maxlength(32),
+	/** 操作员id */
+	slSaid String maxlength(32),
+	/** 操作说明 */
+	slOp String maxlength(255),
+	/** 操作服务地址 */
+	slIp String maxlength(255),
+	/** 操作内容 */
+	slContent String maxlength(4000),
+	/** 操作时间 */
+	slTime String maxlength(14)
+}
+
+
+/**
+ * The Sessioncontent entity.
+ * 会话内容 信息表
+ * @author ylf
+ */
+entity Sessioncontent {
+	/** 会话编号 */
+	scSid String required maxlength(32),
+	/** 内容编号 */
+	scCid String required maxlength(32),
+	/** 用户编号 */
+	scUid String maxlength(32),
+	/** 操作编号 */
+	scOpid String maxlength(32),
+	/** 对象编号 */
+	scObid String maxlength(32)
+}
+
+
+/**
+ * The Sessioninfo entity.
+ * 会话信息 信息表
+ * @author ylf
+ */
+entity Sessioninfo {
+	/** 会话编号 */
+	sId String required maxlength(32),
+	/** 人员编号 */
+	sUid String maxlength(32),
+	/** 角色编号 */
+	sRid String maxlength(32),
+	/** 权限编号 */
+	sPid String maxlength(32),
+	/** 建立时间 */
+	sCreatetime String maxlength(14),
+	/** 结束时间 */
+	sEndtime String maxlength(14),
+	/** 结束状态 */
+	sEndstatus String maxlength(1)
+}
+
+
+/**
+ * Many to Many relationship.
+ * 用户和单位的多对多关系
+ */
+relationship ManyToMany {
+	Userinfo{udUid} to Dept{udDid}
+}
+
+
+/**
+ * Many to Many relationship.
+ * 用户和角色的多对多关系
+ */
+relationship ManyToMany {
+	Userinfo{urUid} to Role{urRid}
+}
+
+/**
+ * The Userinfo entity.
+ * 用户 信息表
+ * @author ylf
+ */
+entity Userinfo {
+	/** 人员编号 */
+	uId String required maxlength(32),
+	/** 姓名 */
+	uName String maxlength(255),
+	/** 性别编号 */
+	uSex String maxlength(1),
+	/** 单位编号 */
+	uDid String maxlength(32),
+	/** 定义时间 */
+	uDeftime String maxlength(14),
+	/** 登录密码 */
+	uPwd String maxlength(128),
+	/** 公钥 */
+	uKey String maxlength(16),
+	/** 证书编号 */
+	uCaid String maxlength(255),
+	/** 身份证号 */
+	uCardid String maxlength(18),
+	/** 职务名称 */
+	uDuty String maxlength(255),
+	/** 主机 */
+	uHost String maxlength(32),
+	/** ip地址 */
+	uIp String maxlength(32),
+	/** 电子邮件 */
+	uEmail String maxlength(64),
+	/** 手机 */
+	uMp String maxlength(16),
+	/** 掩码 */
+	uMmask String maxlength(64),
+	/** 昵称 */
+	uNickname String maxlength(255),
+	/** 电话 */
+	uPhone String maxlength(16),
+	/** 地址 */
+	uAddress String maxlength(255),
+	/** 邮政编码 */
+	uZip String maxlength(6),
+	/** 会话超时时长 */
+	uSouttime String maxlength(8),
+	/** 排序 */
+	uOrder Integer
+	/** 是否可用 */
+	uUseful String maxlength(1)
+}
+
+
+
+// Relations
+
+
+// Options
+service * with serviceClass
+paginate * with pagination
+dto * with mapstruct
+filter *
+
